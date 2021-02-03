@@ -7,7 +7,7 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint ."
+    "lint": "tsc --noEmit && eslint --ext .js,.ts,.tsx ./"
   },
   "dependencies": {
     "react": "16.13.1",
