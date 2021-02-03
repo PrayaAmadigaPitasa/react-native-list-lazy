@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "extensions": [
+          ".js",
+          ".ts",
+          ".tsx"
+        ],
+        "root": [
+          "./"
+        ],
+        "alias": {
+          "@components": "./src/components",
+          "@types": "./src/types",
+        }
+      }
+    ]
+  ]
+}
