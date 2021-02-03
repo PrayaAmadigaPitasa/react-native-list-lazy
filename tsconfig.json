@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "declaration": true,
+    "jsx": "react",
+    "lib": [
+      "es6"
+    ],
+    "target": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+}
