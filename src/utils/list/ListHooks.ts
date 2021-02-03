@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {MutableRefObject, useCallback, useEffect, useMemo, useRef} from 'react';
 import {ListIndicatorStatus, ObjectState} from '@types';
-import {useDefaultState, useForceUpdate} from '../object';
+import {useDefaultState} from '../object';
 
 export interface ListLazyActionLoad {
   merge?: boolean;
@@ -19,7 +20,7 @@ export interface ListLazyAction<ItemT> {
   handleEndReached(): void;
 }
 
-export interface ListLaztActionParam<ItemT, S> {
+export interface ListLazyActionParam<ItemT, S> {
   data: ItemT[];
   stateData?: ObjectState<readonly ItemT[]>;
   stateUpdate: ObjectState<Date>;
@@ -47,15 +48,17 @@ export function useListLazyAction<ItemT, S>({
   loadData,
   keyExtractor,
   onRefresh,
-}: ListLaztActionParam<ItemT, S>): ListLazyAction<ItemT> {
+}: ListLazyActionParam<ItemT, S>): ListLazyAction<ItemT> {
   const stateItems = useDefaultState(data, stateData);
+  const update = stateUpdate[1];
   const [items, setItems] = stateItems;
   const initialize = useRef(false);
   const loading = useRef(true);
   const endPage = useRef(false);
   const page = useRef(1);
   const refreshDefault = useRef(false);
-  const {forceUpdate} = useForceUpdate(stateUpdate);
+
+  const forceUpdate = useCallback(() => update(new Date()), []);
 
   const status = useMemo((): ListIndicatorStatus => {
     if (items.length === 0) {
@@ -69,7 +72,7 @@ export function useListLazyAction<ItemT, S>({
     }
 
     return 'normal';
-  }, [items]);
+  }, [items, initialize.current, endPage.current, loading.current]);
 
   const pageRefresh = useMemo(
     () =>
@@ -121,7 +124,7 @@ export function useListLazyAction<ItemT, S>({
         forceUpdate();
       }
     },
-    [forceUpdate, loadData, limitPerPage, search, mergeData, setItems],
+    [page.current, limitPerPage, search, loadData, forceUpdate, mergeData],
   );
 
   const handleSearch = useCallback(() => {
@@ -144,7 +147,7 @@ export function useListLazyAction<ItemT, S>({
       page.current++;
       handleLoadData({});
     }
-  }, [handleLoadData]);
+  }, [loading.current, endPage.current, page.current, handleLoadData]);
 
   useEffect(() => {
     if (initialize.current) {
@@ -152,16 +155,15 @@ export function useListLazyAction<ItemT, S>({
     } else {
       handleLoadData({});
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   useEffect(() => {
     initialize.current && (pageRefresh || refreshing) && handleRefresh();
-  }, [pageRefresh, refreshing, handleRefresh]);
+  }, [pageRefresh, refreshing]);
 
   useEffect(() => {
     initialize.current && handleSearch();
-  }, [handleSearch]);
+  }, [search]);
 
   return {
     initialize,
