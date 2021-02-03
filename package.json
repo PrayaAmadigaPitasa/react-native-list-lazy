@@ -1,13 +1,24 @@
 {
   "name": "react-native-list-lazy",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/"
+  ],
+  "author": {
+    "name": "Praya Amadiga Pitasa",
+    "email": "prayaamadigapitasa@gmail.com",
+    "url": "https://github.com/PrayaAmadigaPitasa"
+  },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "build": "tsc --project tsconfig.prod.json",
     "test": "jest",
-    "lint": "tsc --noEmit && eslint --ext .js,.ts,.tsx ./"
+    "lint": "tsc --noEmit && eslint --ext .js,.ts,.tsx ./ --ignore-pattern \"dist/\""
   },
   "dependencies": {
     "react": "16.13.1",
