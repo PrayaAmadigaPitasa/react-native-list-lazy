@@ -4,3 +4,5 @@ export type ListIndicatorStatus =
   | 'end_page'
   | 'empty'
   | 'normal';
+
+export type ListDecelerationType = 'fast' | 'normal' | number;
